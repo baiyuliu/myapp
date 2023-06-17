@@ -1,0 +1,38 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Registry
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push web image
+        run: |
+          docker build -t server-web:latest -f web.Dockerfile .
+          docker tag server-web:latest baiyuliu/server-web:latest
+          docker push baiyuliu/server-web:latest
+
+      - name: Build and push database image
+        run: |
+          docker build -t mysql-service:latest -f database.Dockerfile .
+          docker tag mysql-service:latest baiyuliu/mysql-service:latest
+          docker push baiyuliu/mysql-service:latest
+
+      - name: Create MySQL secret
+        run: |
+          echo "${{ secrets.MYSQL_PASSWORD }}" > password.txt
+          kubectl create secret generic mysql-credentials --from-file=password.txt
+          kubectl get secrets mysql-credentials
+
+      - name: Deploy Helm chart
+        run: helm install my-release mychart
