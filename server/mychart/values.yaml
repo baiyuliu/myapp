@@ -1,0 +1,43 @@
+web:
+  replicaCount: 1
+  image:
+    repository: baiyuliu/server-web
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    - name: MYSQL_HOST
+      value: database-service
+    - name: MYSQL_DATABASE
+      value: lookup_db
+    - name: MYSQL_USER
+      value: root
+    - name: MYSQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-credentials
+          key: password.txt
+
+  service:
+    name: web-service
+    type: NodePort
+    port: 3000
+    targetPort: 3000
+
+
+database:
+  replicaCount: 1
+  image:
+    repository: baiyuliu/mysql-service
+    tag: latest
+    pullPolicy: IfNotPresent
+  ports:
+    - containerPort: 3306
+  volumes:
+    - name: database-storage
+      emptyDir: {}
+
+
+  service:
+    name: database-service
+    port: 3306
+    targetPort: 3306

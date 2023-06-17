@@ -1,0 +1,310 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Interview challenge",
+      "description": "Implementation for the interview challenge",
+      "contact": {},
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "tags": [
+            "root"
+          ],
+          "summary": "Get root information",
+          "description": "Get the current date (UNIX epoch), version, and Kubernetes status",
+          "operationId": "get_root_info",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "integer"
+                      },
+                      "kubernetes": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "x-openapi-router-controller": "swagger_server.controllers.root_controller"
+        }
+      },
+      "/health": {
+        "get": {
+          "tags": [
+            "health"
+          ],
+          "summary": "Check health status",
+          "description": "Check the health status of the application",
+          "operationId": "health_check",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "x-openapi-router-controller": "swagger_server.controllers.health_controller"
+        }
+      },
+      "/metrics": {
+        "get": {
+          "tags": [
+            "metrics"
+          ],
+          "summary": "Check metrics status",
+          "description": "Check the metrics status of the application",
+          "operationId": "metrics",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "x-openapi-router-controller": "swagger_server.controllers.metrics_controller"
+        }
+      },
+      "/v1/history": {
+        "get": {
+          "tags": [
+            "history"
+          ],
+          "summary": "List queries",
+          "description": "List queries",
+          "operationId": "queries_history",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/model.Query"
+                    }
+                  },
+                  "x-content-type": "application/json"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/utils.HTTPError"
+                  }
+                }
+              }
+            }
+          },
+          "x-openapi-router-controller": "swagger_server.controllers.history_controller"
+        }
+      },
+      "/v1/tools/lookup": {
+        "get": {
+          "tags": [
+            "tools"
+          ],
+          "summary": "Lookup domain",
+          "description": "Lookup domain and return all IPv4 addresses",
+          "operationId": "lookup_domain",
+          "parameters": [
+            {
+              "name": "domain",
+              "in": "query",
+              "description": "Domain name",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/model.Query"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/utils.HTTPError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/utils.HTTPError"
+                  }
+                }
+              }
+            }
+          },
+          "x-openapi-router-controller": "swagger_server.controllers.tools_controller"
+        }
+      },
+      "/v1/tools/validate": {
+        "post": {
+          "tags": [
+            "tools"
+          ],
+          "summary": "Simple IP validation",
+          "description": "Simple IP validation",
+          "operationId": "validate_ip",
+          "requestBody": {
+            "description": "IP to validate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/handler.ValidateIPRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/handler.ValidateIPResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/utils.HTTPError"
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": "request",
+          "x-openapi-router-controller": "swagger_server.controllers.tools_controller"
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "handler.ValidateIPRequest": {
+          "type": "object",
+          "properties": {
+            "ip": {
+              "type": "string"
+            }
+          }
+        },
+        "handler.ValidateIPResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "boolean"
+            }
+          },
+          "example": {
+            "status": true
+          }
+        },
+        "model.Address": {
+          "type": "object",
+          "properties": {
+            "ip": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "ip": "ip"
+          }
+        },
+        "model.Query": {
+          "type": "object",
+          "properties": {
+            "addresses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/model.Address"
+              }
+            },
+            "client_ip": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "integer"
+            },
+            "domain": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "addresses": [
+              {
+                "ip": "ip"
+              },
+              {
+                "ip": "ip"
+              }
+            ],
+            "domain": "domain",
+            "created_at": 0,
+            "client_ip": "client_ip"
+          }
+        },
+        "utils.HTTPError": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "x-original-swagger-version": "2.0"
+  }
