@@ -41,6 +41,3 @@ database:
     name: database-service
     port: 3306
     targetPort: 3306
-
-mysql:
-  password: MyPassword
