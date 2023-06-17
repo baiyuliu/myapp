@@ -28,11 +28,11 @@ jobs:
           docker tag mysql-service:latest baiyuliu/mysql-service:latest
           docker push baiyuliu/mysql-service:latest
 
-      - name: Create MySQL secret
+      - name: Set up MySQL password
         run: |
-          echo "${{ secrets.MYSQL_PASSWORD }}" > password.txt
-          kubectl create secret generic mysql-credentials --from-file=password.txt
-          kubectl get secrets mysql-credentials
+          echo "mysql:" >> values.yaml
+          echo "  password: ${{ secrets.MYSQL_PASSWORD }}" >> values.yaml
+
 
       - name: Deploy Helm chart
         run: helm install my-release mychart
