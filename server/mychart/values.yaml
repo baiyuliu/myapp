@@ -5,15 +5,10 @@ web:
     tag: latest
     pullPolicy: IfNotPresent
   env:
-    - name: MYSQL_HOST
-      value: database-service
-    - name: MYSQL_DATABASE
-      value: lookup_db
-    - name: MYSQL_USER
-      value: username
-    - name: MYSQL_PASSWORD
-      valueFrom:
-        secretKeyRef:
+    MYSQL_HOST: database-service
+    MYSQL_DATABASE: lookup_db
+    MYSQL_USER: username
+    MYSQL_PASSWORD:
           name: mysql-credentials
           key: password
 
