@@ -59,8 +59,6 @@ jobs:
           docker tag server-web:latest baiyuliu/server-web:latest
           docker push baiyuliu/server-web:latest
         continue-on-error:  true
- 
-      - name: Set up MySQL credentials
 
 
       - name: Build and push database image
