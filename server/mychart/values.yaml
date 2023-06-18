@@ -10,7 +10,7 @@ web:
     - name: MYSQL_DATABASE
       value: lookup_db
     - name: MYSQL_USER
-      value: root
+      value: username
     - name: MYSQL_PASSWORD
       valueFrom:
         secretKeyRef:
