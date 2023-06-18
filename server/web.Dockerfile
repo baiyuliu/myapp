@@ -9,11 +9,13 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY swagger_server/ /usr/src/app/swagger_server
 
-ENV MYSQL_HOST=mysql-service
-ENV MYSQL_PORT=3306
-ENV MYSQL_USER=username
-ENV MYSQL_PASSWORD=password
-ENV MYSQL_DATABASE=lookup_db
+#ENV MYSQL_HOST=mysql-service
+#ENV MYSQL_PORT=3306
+#ENV MYSQL_USER=username
+#ARG MYSQL_PASSWORD
+#ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+#ENV MYSQL_DATABASE=lookup_db
 
 EXPOSE 3000
 
