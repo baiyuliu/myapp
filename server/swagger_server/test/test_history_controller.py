@@ -19,7 +19,7 @@ class TestHistoryController(BaseTestCase):
         List queries
         """
         response = self.client.open(
-            '/history',
+            '/v1/history',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
