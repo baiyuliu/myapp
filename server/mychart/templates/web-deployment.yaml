@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.web.replicaCount }}
   selector:
     matchLabels:
       app: web
@@ -14,21 +14,21 @@ spec:
     spec:
       containers:
         - name: web
-          image: baiyuliu/server-web:latest
+          image: {{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}
           ports:
             - containerPort: 3000
           env:
             - name: MYSQL_HOST
-              value: database-service
+              value: {{ .Values.web.env.MYSQL_HOST }}
             - name: MYSQL_DATABASE
-              value: lookup_db
+              value: {{ .Values.web.env.MYSQL_DATABASE }}
             - name: MYSQL_USER
-              value: root
+              value: {{ .Values.web.env.MYSQL_USER }}
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-credentials2
-                  key: password
+                  name: {{ .Values.web.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.name }}
+                  key: {{ .Values.web.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.key }}
 ---
 apiVersion: v1
 kind: Service
