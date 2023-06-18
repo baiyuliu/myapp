@@ -1,17 +1,18 @@
+import ipaddress
+import logging
+import os
 import connexion
-#import six
+import socket
+import mysql.connector
 from flask import jsonify, request
 from swagger_server.models.handler_validate_ip_request import HandlerValidateIPRequest  # noqa: E501
+#import six
 #from swagger_server.models.handler_validate_ip_response import HandlerValidateIPResponse  # noqa: E501
 #from swagger_server.models.model_query import ModelQuery  # noqa: E501
 #from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
 #from swagger_server import util
-import ipaddress
-import logging
-import os
 
-import socket
-import mysql.connector
+
 
 
 

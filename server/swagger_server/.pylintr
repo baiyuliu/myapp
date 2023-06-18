@@ -1,4 +1,0 @@
-[pylint]
-disable = C0103, C0114, C0116
-max-line-length = 120
-

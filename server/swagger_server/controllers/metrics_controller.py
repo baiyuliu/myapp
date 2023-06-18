@@ -1,7 +1,5 @@
-import connexion
-import six
 from prometheus_client import generate_latest, CollectorRegistry, CONTENT_TYPE_LATEST
-from flask import Flask, Response
+from flask import  Response
 
 registry = CollectorRegistry()
 
