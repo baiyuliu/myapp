@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'server/swagger**'
 
 jobs:
   deploy:
@@ -70,8 +72,8 @@ jobs:
           docker push baiyuliu/mysql-service:latest
         continue-on-error:  true
 
-
-      - name: Deploy Helm chart
-        run: |
-          cd  $GITHUB_WORKSPACE/server
-          helm upgrade  my-release mychart
+ 
+    #  - name: Deploy Helm chart
+    #     run: |
+    #      cd  $GITHUB_WORKSPACE/server
+    #      helm upgrade  my-release mychart
