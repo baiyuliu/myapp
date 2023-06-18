@@ -9,8 +9,6 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    environment: 
-      name: Test_Pipeline
 
     steps:
       - name: Checkout code
