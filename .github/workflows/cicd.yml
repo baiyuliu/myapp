@@ -14,14 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
          
-      - name: Set up environment variables
+      - name: Set up environment variables and login docker
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-
-      - name: Login to Docker Registry
         run: |
           ls
           pwd
@@ -51,7 +49,7 @@ jobs:
             domain VARCHAR(255) NOT NULL,
             result TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          ) ENGINE=InnoDB;" > init.sq
+          ) ENGINE=InnoDB;" > init.sql
         continue-on-error:  true
 
       - name: Build and push database image
