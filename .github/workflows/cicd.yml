@@ -24,19 +24,9 @@ jobs:
           ls
           echo $DOCKER_PASSWORD $DOCKER_USERNAME $MYSQL_USERNAME $MYSQL_PASSWORD  > /tmp/dd.txt
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME  --password-stdin
-        continue-on-error:  true
-
-      - name: Build and push web image
-        run: |
-          cd  $GITHUB_WORKSPACE/server
-          pwd
-          docker build -t server-web:latest -f web.Dockerfile .
-          docker tag server-web:latest baiyuliu/server-web:latest
-          docker push baiyuliu/server-web:latest
-        continue-on-error:  true
- 
-      - name: Set up MySQL credentials
-        run: |
+          
+          
+          ### create DB init sql
           echo "CREATE DATABASE IF NOT EXISTS lookup_db;
           CREATE USER IF NOT EXISTS '${MYSQL_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 
@@ -51,22 +41,39 @@ jobs:
             result TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           ) ENGINE=InnoDB;" >  $GITHUB_WORKSPACE/server/mysql/init.sql
+          
+          
+          
+          #### Set up MySQL password
+          pwd
+          echo "mysql:" >> values.yaml
+          echo "  password: $MYSQL_PASSWORD" >> values.yaml
         continue-on-error:  true
+
+
+      - name: Build and push web image
+        run: |
+          cd  $GITHUB_WORKSPACE/server
+          pwd
+          docker build -t server-web:latest -f web.Dockerfile .
+          docker tag server-web:latest baiyuliu/server-web:latest
+          docker push baiyuliu/server-web:latest
+        continue-on-error:  true
+ 
+      - name: Set up MySQL credentials
+
 
       - name: Build and push database image
         run: |
+          cd  $GITHUB_WORKSPACE/server
           #docker build -t baiyuliu/mysql-service:latest --build-arg MYSQL_PASSWORD=${MYSQL_PASSWORD}  -f database.Dockerfile .
           docker build -t mysql-service:latest -f database.Dockerfile .
           docker tag mysql-service:latest baiyuliu/mysql-service:latest
           docker push baiyuliu/mysql-service:latest
         continue-on-error:  true
 
-      - name: Set up MySQL password
-        run: |
-          pwd
-          echo "mysql:" >> values.yaml
-          echo "  password: $MYSQL_PASSWORD" >> values.yaml
-        continue-on-error:  true
 
       - name: Deploy Helm chart
-        run: helm install my-release mychart
+        run: |
+          cd  $GITHUB_WORKSPACE/server
+          helm upgrade  my-release mychart
