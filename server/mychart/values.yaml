@@ -15,7 +15,7 @@ web:
       valueFrom:
         secretKeyRef:
           name: mysql-credentials
-          key: password.txt
+          key: password
 
   service:
     name: web-service
