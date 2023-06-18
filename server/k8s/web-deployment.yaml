@@ -28,7 +28,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-credentials
-                  key: password.txt
+                  key: password
 ---
 apiVersion: v1
 kind: Service
