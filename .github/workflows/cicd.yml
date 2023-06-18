@@ -22,10 +22,31 @@ jobs:
           docker tag server-web:latest baiyuliu/server-web:latest
           docker push baiyuliu/server-web:latest
 
-      - name: Build and push database image
+      - name: Set up MySQL credentials
+        env:
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         run: |
-          docker build -t mysql-service:latest -f database.Dockerfile .
-          docker tag mysql-service:latest baiyuliu/mysql-service:latest
+          echo "CREATE DATABASE IF NOT EXISTS lookup_db;
+          CREATE USER IF NOT EXISTS '${MYSQL_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+
+          GRANT ALL PRIVILEGES ON lookup_db.* TO '${MYSQL_USERNAME}'@'%';
+          FLUSH PRIVILEGES;
+
+          USE lookup_db;
+
+          CREATE TABLE IF NOT EXISTS lookup_logs (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            domain VARCHAR(255) NOT NULL,
+            result TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          ) ENGINE=InnoDB;" > init.sq
+
+      - name: Build and push database image
+        env:
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        run: |
+          docker build -t baiyuliu/mysql-service:latest --build-arg MYSQL_PASSWORD=${MYSQL_PASSWORD}  -f database.Dockerfile .
           docker push baiyuliu/mysql-service:latest
 
       - name: Set up MySQL password
