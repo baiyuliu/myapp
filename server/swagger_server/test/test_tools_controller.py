@@ -22,7 +22,7 @@ class TestToolsController(BaseTestCase):
         """
         query_string = [('domain', 'domain_example')]
         response = self.client.open(
-            '/tools/lookup',
+            '/v1/tools/lookup',
             method='GET',
             query_string=query_string)
         self.assert200(response,
@@ -35,7 +35,7 @@ class TestToolsController(BaseTestCase):
         """
         body = HandlerValidateIPRequest()
         response = self.client.open(
-            '/tools/validate',
+            '/v1/tools/validate',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
