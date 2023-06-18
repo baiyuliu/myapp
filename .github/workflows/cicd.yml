@@ -20,13 +20,15 @@ jobs:
           pwd
           echo ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_USERNAME }} > /tmp/dd.txt
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        continue-on-error:  true
 
       - name: Build and push web image
         run: |
           docker build -t server-web:latest -f web.Dockerfile .
           docker tag server-web:latest baiyuliu/server-web:latest
           docker push baiyuliu/server-web:latest
-
+        continue-on-error:  true
+ 
       - name: Set up MySQL credentials
         env:
           MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
@@ -46,6 +48,7 @@ jobs:
             result TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           ) ENGINE=InnoDB;" > init.sq
+        continue-on-error:  true
 
       - name: Build and push database image
         env:
