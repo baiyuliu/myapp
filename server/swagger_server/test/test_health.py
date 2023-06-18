@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from controllers.health_controller import health_check
+from swagger_server.controllers.health_controller import health_check
 
 class TestHealthCheck(unittest.TestCase):
     def test_health_check(self):
