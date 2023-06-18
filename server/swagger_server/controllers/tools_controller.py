@@ -1,11 +1,11 @@
 import connexion
-import six
-from flask import Flask, jsonify, request
+#import six
+from flask import jsonify, request
 from swagger_server.models.handler_validate_ip_request import HandlerValidateIPRequest  # noqa: E501
-from swagger_server.models.handler_validate_ip_response import HandlerValidateIPResponse  # noqa: E501
-from swagger_server.models.model_query import ModelQuery  # noqa: E501
-from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
-from swagger_server import util
+#from swagger_server.models.handler_validate_ip_response import HandlerValidateIPResponse  # noqa: E501
+#from swagger_server.models.model_query import ModelQuery  # noqa: E501
+#from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
+#from swagger_server import util
 import ipaddress
 import logging
 import os
@@ -46,11 +46,11 @@ def lookup_domain(domain):  # noqa: E501
 
     # Log the successful query and result in the MySQL database
     try:
-            # Resolve IPv4 addresses for the domain
-            ipv4_addresses = resolve_ipv4_addresses(domain)
-            logging.info("resolve domain: %s", domain)
-            # Log the successful query and result in the MySQL database
-            log_query_result(domain, ipv4_addresses)
+        # Resolve IPv4 addresses for the domain
+        ipv4_addresses = resolve_ipv4_addresses(domain)
+        logging.info("resolve domain: %s", domain)
+        # Log the successful query and result in the MySQL database
+        log_query_result(domain, ipv4_addresses)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

@@ -1,5 +1,3 @@
-import connexion
-import six
 
 
 def health_check():

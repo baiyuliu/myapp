@@ -1,11 +1,12 @@
-import connexion
-import six
-
-from swagger_server.models.model_query import ModelQuery  # noqa: E501
-from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
-from swagger_server import util
-from swagger_server.controllers.tools_controller import get_latest_queries
 import logging
+import connexion
+#import six
+
+#from swagger_server.models.model_query import ModelQuery  # noqa: E501
+#from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
+#from swagger_server import util
+from swagger_server.controllers.tools_controller import get_latest_queries
+
 
 def queries_history():  # noqa: E501
     """List queries
