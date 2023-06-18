@@ -50,8 +50,23 @@ jobs:
           pwd
           echo "mysql:" >> $GITHUB_WORKSPACE/server/mychart/values.yaml
           echo "  password: $MYSQL_PASSWORD" >> $GITHUB_WORKSPACE/server/mychart/values.yaml
-        continue-on-error:  true
 
+
+
+      - name: Run tests
+        run: |
+          cd $GITHUB_WORKSPACE/server
+          export PYTHONPATH=/mnt/share/server
+          #python3 swagger_server/test/test_history_controller.py 
+          pytest  # Run tests with pytest
+        continue-on-error:  true
+        
+
+      - name: Run linting
+        run: |
+          cd $GITHUB_WORKSPACE/server
+          pylint --rcfile=swagger_server/.pylintrc swagger_server/controllers/*.py
+        continue-on-error:  true
 
       - name: Build and push web image
         run: |
@@ -60,7 +75,7 @@ jobs:
           docker build -t server-web:latest -f web.Dockerfile .
           docker tag server-web:latest baiyuliu/server-web:latest
           docker push baiyuliu/server-web:latest
-        continue-on-error:  true
+        
 
 
       - name: Build and push database image
@@ -70,7 +85,7 @@ jobs:
           docker build -t mysql-service:latest -f database.Dockerfile .
           docker tag mysql-service:latest baiyuliu/mysql-service:latest
           docker push baiyuliu/mysql-service:latest
-        continue-on-error:  true
+        
 
  
     #  - name: Deploy Helm chart
