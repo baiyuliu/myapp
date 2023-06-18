@@ -46,8 +46,8 @@ jobs:
           
           #### Set up MySQL password
           pwd
-          echo "mysql:" >> values.yaml
-          echo "  password: $MYSQL_PASSWORD" >> values.yaml
+          echo "mysql:" >> GITHUB_WORKSPACE/server/mychart/values.yaml
+          echo "  password: $MYSQL_PASSWORD" >> GITHUB_WORKSPACE/server/mychart/values.yaml
         continue-on-error:  true
 
 
