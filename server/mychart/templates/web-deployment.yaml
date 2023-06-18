@@ -27,8 +27,8 @@ spec:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.web.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.name }}
-                  key: {{ .Values.web.env.MYSQL_PASSWORD.valueFrom.secretKeyRef.key }}
+                  name: {{ .Values.web.env.MYSQL_PASSWORD.name }}
+                  key: {{ .Values.web.env.MYSQL_PASSWORD.key }}
 ---
 apiVersion: v1
 kind: Service
