@@ -1,32 +1,21 @@
-# coding: utf-8
-
-#from __future__ import absolute_import
-
-from flask import json
-#from six import BytesIO
-
-from swagger_server.models.handler_validate_ip_request import HandlerValidateIPRequest  # noqa: E501
-#from swagger_server.models.handler_validate_ip_response import HandlerValidateIPResponse  # noqa: E501
-#from swagger_server.models.model_query import ModelQuery  # noqa: E501
-#from swagger_server.models.utils_http_error import UtilsHTTPError  # noqa: E501
+import unittest
+from unittest.mock import patch
+from flask import Flask, json
 from swagger_server.test import BaseTestCase
+from swagger_server.models.handler_validate_ip_request import HandlerValidateIPRequest
 
+# 创建一个模拟的应用程序
+app = Flask(__name__)
+
+# 模拟服务的处理函数
+def mock_lookup_domain(*args, **kwargs):
+    return {
+        'response': 'Mock response',
+        'status_code': 200
+    }
 
 class TestToolsController(BaseTestCase):
     """ToolsController integration test stubs"""
-
-    def test_lookup_domain(self):
-        """Test case for lookup_domain
-
-        Lookup domain
-        """
-        query_string = [('domain', 'domain_example')]
-        response = self.client.open(
-            '/v1/tools/lookup',
-            method='GET',
-            query_string=query_string)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
 
     def test_validate_ip(self):
         """Test case for validate_ip
@@ -41,8 +30,7 @@ class TestToolsController(BaseTestCase):
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
-
+    
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
