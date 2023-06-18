@@ -6,6 +6,7 @@ FROM mysql:latest
 #ENV MYSQL_USER=username
 #ARG MYSQL_PASSWORD
 #ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+MYSQL_RANDOM_ROOT_PASSWORD=true
 
 
 # 将数据库初始化脚本复制到容器内的初始化目录
