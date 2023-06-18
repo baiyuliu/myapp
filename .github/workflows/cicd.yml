@@ -46,8 +46,11 @@ jobs:
         env:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         run: |
-          docker build -t baiyuliu/mysql-service:latest --build-arg MYSQL_PASSWORD=${MYSQL_PASSWORD}  -f database.Dockerfile .
+          #docker build -t baiyuliu/mysql-service:latest --build-arg MYSQL_PASSWORD=${MYSQL_PASSWORD}  -f database.Dockerfile .
+          docker build -t mysql-service:latest -f database.Dockerfile .
+          docker tag mysql-service:latest baiyuliu/mysql-service:latest
           docker push baiyuliu/mysql-service:latest
+
 
       - name: Set up MySQL password
         run: |
