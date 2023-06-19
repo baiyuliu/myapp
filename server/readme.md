@@ -2,6 +2,21 @@
 Upate any file under "server/swagger_server/".
 That is the app foler.
 
+## Setting in your environment 
+the si on the github secret. 
+you should seting it in your enrionment.
+docker user and pasword used to push the image to repo.
+mysql user and password are used to grant mysql account.
+the mysql account and password for app is setting by deploy env.
+the mysql username I use the "username"
+```
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+```
+
 # How to access the serivce 
 It running as "NodePort" service.
 Access it by your k8s node IP and port map to 300
