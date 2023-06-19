@@ -14,7 +14,7 @@ services:
       - MYSQL_PASSWORD=password
     networks:
       - my-network
-    hostname: mysql-service
+    hostname: database-service
 
   web:
     build:
