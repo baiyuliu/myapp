@@ -55,21 +55,15 @@ jobs:
 
       - name: Run tests
         run: |
-          cd $GITHUB_WORKSPACE/server
-          pyenv activate myenv 
-          pip install -r test-requirements.txt
-          pip install -r requirements.txt
-          export PYTHONPATH=/mnt/share/server
-          #python3 swagger_server/test/test_history_controller.py 
-          pytest  # Run tests with pytest
+          docker rm -f test-env;
+          docker run -d -v $GITHUB_WORKSPACE/server/:/usr/src/app/ --name test-env baiyuliu/test-env:latest
+          docker exec test-env pytest  # Run tests with pytest
         continue-on-error:  true
         
 
       - name: Run linting
         run: |
-          cd $GITHUB_WORKSPACE/server
-          pyenv activate myenv 
-          pylint --rcfile=swagger_server/.pylintrc swagger_server/controllers/*.py
+          docker exec test-env pylint --rcfile=swagger_server/.pylintrc swagger_server/controllers/*.py
         continue-on-error:  true
 
       - name: Build and push web image
