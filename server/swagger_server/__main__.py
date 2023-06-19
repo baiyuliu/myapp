@@ -10,7 +10,6 @@ from flask import Flask, request
 
 
 
-
 def main():
     logging.basicConfig(filename='app.log', level=logging.INFO)
     app = connexion.App(__name__, specification_dir='./swagger/')
