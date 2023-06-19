@@ -1,5 +1,5 @@
 # Trigger pipline
-upate any file under "server/swagger_server/".
+Upate any file under "server/swagger_server/".
 That is the app foler.
 
 # How to access the serivce 
