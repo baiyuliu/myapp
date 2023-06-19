@@ -22,6 +22,10 @@ services:
       dockerfile: web.Dockerfile
     ports:
       - '3000:3000'
+    environment:
+      - MYSQL_DATABASE=lookup_db
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=password
     depends_on:
       - database
     networks:
