@@ -11,4 +11,5 @@ RUN pip3 install --no-cache-dir -r requirements2.txt
 ENV PYTHONPATH=/usr/src/app
 
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["sleep", "600"]
+
